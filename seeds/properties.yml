@@ -1,0 +1,10 @@
+version: 2
+
+# TODO the following doesn't work. why not?
+seeds:
+  - name: jaffle_shop_customers
+    +schema: jaffle_shop
+  - name: jaffle_shop_orders
+    +schema: jaffle_shop
+  - name: stripe_payments
+    +schema: stripe 

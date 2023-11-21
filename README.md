@@ -3,17 +3,74 @@
 This is a modified version of our public [tutorial](https://docs.getdbt.com/tutorial/setting-up)
 intended for users of dbt on Databricks.
 
-Any questions? jeremy@fishtownanalytics.com
+## python requirements
+
+```
+pip install dbt-core
+pip install dbt-spark
+pip install dbt-databricks
+
+```
 
 ## Sample data
 
 Create Databricks tables `jaffle_shop.orders`, `jaffle_shop.customers`,
-and `stripe.payments` from these CSV files, which are located in a public S3 bucket ([docs](https://docs.databricks.com/data/tables.html#create-a-table-using-the-ui)):
+and `stripe.payments` from these CSV files.
+
+Located in a public S3 bucket ([docs](https://docs.databricks.com/data/tables.html#create-a-table-using-the-ui)):
+
+Original locations:
 
 ```
 s3://dbt-tutorial-public/jaffle_shop_orders.csv
 s3://dbt-tutorial-public/jaffle_shop_customers.csv
 s3://dbt-tutorial-public/stripe_payments.csv
+```
+
+Downloaded with:
+```bash
+aws s3 cp s3://dbt-tutorial-public/jaffle_shop_orders.csv jaffle_shop_orders.csv
+aws s3 cp s3://dbt-tutorial-public/jaffle_shop_customers.csv jaffle_shop_customers.csv
+aws s3 cp s3://dbt-tutorial-public/stripe_payments.csv stripe_payments.csv
+```
+
+Now create the tables using the databricks notebook.
+
+(Took 1.66 mins on my cluster.)
+
+```
+%sql
+
+DROP SCHEMA IF EXISTS jaffle_shop CASCADE;
+CREATE SCHEMA jaffle_shop;
+
+CREATE TABLE jaffle_shop.orders
+USING csv
+OPTIONS (
+  path "s3://dbt-tutorial-public/jaffle_shop_orders.csv",
+  header "true",
+  inferSchema "true"
+);
+
+CREATE TABLE jaffle_shop.customers
+USING csv
+OPTIONS (
+  path "s3://dbt-tutorial-public/jaffle_shop_customers.csv",
+  header "true",
+  inferSchema "true"
+);
+
+DROP SCHEMA IF EXISTS stripe CASCADE;
+CREATE SCHEMA stripe;
+
+CREATE TABLE stripe.payments
+USING csv
+OPTIONS (
+  path "s3://dbt-tutorial-public/stripe_payments.csv",
+  header "true",
+  inferSchema "true"
+);
+
 ```
 
 ## Getting started
