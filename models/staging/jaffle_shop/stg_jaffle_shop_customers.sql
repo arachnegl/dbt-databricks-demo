@@ -1,6 +1,6 @@
 with source_customers as (
 
-    select * from {{ source('jaffle_shop', 'customers') }}
+    select * from {{ ref('jaffle_shop_customers') }}
 
 ),
 
