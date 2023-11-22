@@ -87,6 +87,15 @@ dbt docs generate
 dbt docs serve
 ```
 
+dbt docs for a given model:
+
+![dbt docs with linage](images/fct_orders.png "dbt docs with linage")
+
+dbt docs linage for project:
+
+![linage](images/full_project_lineage.png "linage")
+
+
 -------------
 
 dbt docs are generated directly from source code ensuring docs are never outdated.
@@ -207,6 +216,8 @@ Learning curve of DBT constucts (eg resource paths, + prefix)
 Can't organise your projects by having different schemas
 Project files Vs property files.
 Problems with table name limits of backend (PostgreSQL) for tmp tables.
+
+-------------
 
 ## Summary
 
