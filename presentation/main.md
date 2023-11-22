@@ -7,12 +7,6 @@
  - data engineers
  - data managers
 
-overview:
-- a
-- b
-- c
-
-
 ------------
 
 Not working for DBT Labs.
@@ -21,65 +15,67 @@ I am not a DBT pro. But I have dug around in the src.
 Two DBT projects to date.
 real believer in combo of SQL + DBT.
 
+## DBT in Action 
+
+My case studies:
+- Fund Management
+- Logistics company
+
+Key Achievements:
+- portability (here with PostgreSQL and DuckDB)
+- tech implementation patterns clearly defined and standardised.
+- non tech stakeholders appreciated the diagrams.
+
+-------------
+
+read online for DBT & other's case studies.
+Orchestration with Airflow.
+
 ## What is Data Build Tool aka DBT?
 
-Evolution and current importance of DBT.
 A tool for transformations. The T in ETL (or ELT).
 Brings software engineering best practices to SQL projects (more later).
-Extra features eg. snapshots.
 Portability through concept of Adapters means one tool many (SQL) computes eg. Databricks, PostgreSQL, SQLServer, Snowflake...
+It is batch oriented.
+SQL focussed.
 DBT core is Open Source - no licensing costs, a vibrant community...
 
 ------------
 
 Fishtown analytics, data consultancy.
-
-
-## What DBT is not
-
-Batch oriented.
-SQL focussed.
-Adapter variability.
-
-------------
-
 Apparently there is some recent support for streaming on certain platforms: eg Materialize
 Python pandas support does exist (recent) and others may come.
 This is really a SQL tool in my eyes.
 Some adapters are more equal than others. Not all features are allways supported.
 https://docs.getdbt.com/docs/supported-data-platforms
 
-## SQL enhanced - 1/3 SQL Sofware Enginering
+## Sofware Enginering Best Practices
 
 Brings software engineering best practice to SQL projects.
-
-A standardised workflow for the Common Data Model (or call it medallion architecture)
 
 Modularity: Building Blocks of SQL
 Reusability: Writing Once, Using Everywhere
 Standardization: Keeping SQL Code Clean
 Testability: Write SQL tests using `dbt-core` and `dbt-expectations`
 
+local dev experience also works well with integrating it with CI/CD.
+
 -------------
 
-## SQL enhanced - 2/3 DAG
+The dbt-expectations depends on packages.
+
+## The dependency graph (DAG)
 
 Constructs a dependency graph (DAG).
 Dependencies between tables and views are explicit in code (yaml + macros). 
 Validation at compile time - saves dev round trip.
 Documenation benefits (will revisit later).
 
+A standardised workflow for the Common Data Model (or medallion architecture)
+
 -------------
 DAGs - Terraform, Airflow.
 enhanced dev experience
-
-## SQL enhanced - 3/3 workflow
-
-CLI interface - local and easy CI/CD integrations.
-
--------------
-
-Easily integrated within CI/CD workflow.
 
 ## Lineage & Visualizing Data Flow
 
@@ -98,7 +94,9 @@ https://hub.getdbt.com/
 
 ## Technologies involved
 
-A CLI interface (for DBT core).
+DBT compiles Jinja templates to SQL.
+The templates define an execution graph (a DAG).
+DBT then orchestrates the execution of that graph.
 
 Four: SQL, yaml, Jinja, python.
 
@@ -125,8 +123,7 @@ Business Logic:
 
 ## model - minimal example
 
-- sql mixed with jinja {{ }}
-- jinja macros: `config` and `ref`
+jinja macros: `config` and `ref`
 
 ```
 -- src: models/table_a.sql
@@ -195,21 +192,6 @@ models:
           - not_null
 ```
 
-## DBT in Action 
-
-My case studies:
-- Fund Management
-- Logistics company
-
-Key Achievements:
-- portability (here with PostgreSQL and DuckDB)
-- tech implementation patterns clearly defined and standardised.
-- non tech stakeholders appreciated the diagrams.
-
--------------
-
-read online for DBT & other's case studies.
-Orchestration with Airflow.
 
 ## Migrating existing SQL
 
