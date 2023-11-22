@@ -1,38 +1,67 @@
 # dbt + Databricks Demo!
 
-This is a modified version of our public [tutorial](https://docs.getdbt.com/tutorial/setting-up)
-intended for users of dbt on Databricks.
+This is intended to demo dbt on Databricks running in Azure.
 
-## python requirements
+## presentation
+
+[The presentation can be found here](presentation/main.md)
+
+## local setup
+
+Ensure you have Azure cli installed for bicep.
+
+A databricks platform can be created and destroyed with the following:
+
+```bash
+make deploy
+make destroy
+```
+
+Install python requirements:
+
+```bash
+make install_requirements
 
 ```
-pip install dbt-core
-pip install dbt-spark
-pip install dbt-databricks
 
+copy and then modify your dbt profiles file.
+```bash
+$ cp ./sample.profiles.yml ~/.dbt/profiles.yml
 ```
 
-## Sample data
+Populate `~/.dbt/profiles.yml` with your Databricks host, API token, cluster ID, and schema name. These will be available from the above `make deploy` step.
 
-Create Databricks tables `jaffle_shop.orders`, `jaffle_shop.customers`,
-and `stripe.payments` from these CSV files.
+validate your setup:
 
-Located in a public S3 bucket ([docs](https://docs.databricks.com/data/tables.html#create-a-table-using-the-ui)):
-
-Original locations:
-
+```bash
+dbt debug
 ```
-s3://dbt-tutorial-public/jaffle_shop_orders.csv
-s3://dbt-tutorial-public/jaffle_shop_customers.csv
-s3://dbt-tutorial-public/stripe_payments.csv
+
+## execute
+
+```bash
+dbt seed
+dbt run
+dbt test
 ```
+
+## Notes on seed data
+
+### dbt seeds
 
 Downloaded with:
 ```bash
-aws s3 cp s3://dbt-tutorial-public/jaffle_shop_orders.csv jaffle_shop_orders.csv
-aws s3 cp s3://dbt-tutorial-public/jaffle_shop_customers.csv jaffle_shop_customers.csv
-aws s3 cp s3://dbt-tutorial-public/stripe_payments.csv stripe_payments.csv
+aws s3 cp s3://dbt-tutorial-public/jaffle_shop_orders.csv    seeds/jaffle_shop_orders.csv
+aws s3 cp s3://dbt-tutorial-public/jaffle_shop_customers.csv seeds/jaffle_shop_customers.csv
+aws s3 cp s3://dbt-tutorial-public/stripe_payments.csv       seeds/stripe_payments.csv
 ```
+
+### manaul setup of data.
+
+These would then be used as DBT as a source.
+
+Create Databricks tables `jaffle_shop.orders`, `jaffle_shop.customers`,
+and `stripe.payments` from these CSV files.
 
 Now create the tables using the databricks notebook.
 
@@ -73,31 +102,8 @@ OPTIONS (
 
 ```
 
-## Getting started
 
-The instructions below assume you are running dbt on macOS. Linux and Windows 
-users should adjust the bash commands accordingly.
-
-1. Clone this github repo
-2. Install [dbt-spark](https://github.com/fishtown-analytics/dbt-spark): `pip install dbt-spark`
-3. Copy the example profile to your `~/.dbt` folder (created when installing dbt):
-```bash
-$ cp ./sample.profiles.yml ~/.dbt/profiles.yml
-```
-4. Populate `~/.dbt/profiles.yml` with your Databricks host, API token, cluster ID, and schema name
-```bash
-open ~/.dbt
-```
-5. Verify that you can connect to Databricks
-```
-$ dbt debug
-```
-6. Verify that you can run dbt
-```
-$ dbt run
-```
-
-### Resources:
+## Resources:
 - Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
 - Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
 - Join the [chat](http://slack.getdbt.com/) on Slack for live discussions and support
