@@ -1,0 +1,4 @@
+dbt-core
+dbt-spark
+dbt-databricks
+databricks-cli
